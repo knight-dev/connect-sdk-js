@@ -1,6 +1,0 @@
-dist/
-node_modules/
-coverage/
-# Generated at prebuild from package.json — single source of truth for SDK_VERSION
-src/version.ts
-*.tsbuildinfo
