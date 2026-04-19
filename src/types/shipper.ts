@@ -63,6 +63,17 @@ export interface CreateShipperInput {
   addressLine2?: string;
   city?: string;
   parish?: string;
+  /**
+   * Label address code (e.g. `"CNW-12345"`). Required unless
+   * {@link generateAddressCode} is `true`. Must match one of the courier's
+   * registered warehouse prefixes.
+   */
+  addressCode?: string;
+  /** Optional. Resolved automatically from {@link addressCode}'s prefix when omitted. */
+  warehouseId?: string;
+  freightType?: FreightType | 'Both';
+  /** Opt-in for couriers migrating without existing codes. Platform auto-generates. */
+  generateAddressCode?: boolean;
 }
 
 export interface UpdateShipperInput {
@@ -89,9 +100,31 @@ export interface BulkShipperInput {
   idNumber?: string;
   emailNotificationsEnabled?: boolean;
   smsNotificationsEnabled?: boolean;
+
+  /**
+   * The shipper's existing label address code from the courier's own system
+   * (e.g. `"CNW-12345"`). Required on first sync unless {@link generateAddressCode}
+   * is `true`. Must match one of the courier's registered warehouse prefixes —
+   * `ADDRESS_PREFIX_UNKNOWN` otherwise.
+   */
+  addressCode?: string;
+  /** Optional. Auto-resolved from {@link addressCode}'s prefix when omitted. */
+  warehouseId?: string;
+  freightType?: FreightType | 'Both';
+  /** Auto-generate the code using the courier's default warehouse. */
+  generateAddressCode?: boolean;
+  /**
+   * Opt-in to replace an existing primary address code. Same-prefix only
+   * (`CNW-1` → `CNW-2` OK, `FSJ-1` → `CNW-2` rejected with
+   * `ADDRESS_CODE_PREFIX_MISMATCH`). Replacement mutates the row in place so
+   * existing packages keep their owner.
+   */
+  forceAddressCode?: boolean;
 }
 
 export type BulkShipperStatus = 'created' | 'updated' | 'skipped' | 'error';
+
+export type AddressOutcome = 'created' | 'updated' | 'unchanged';
 
 export interface BulkShipperResult {
   index: number;
@@ -99,6 +132,8 @@ export interface BulkShipperResult {
   status: BulkShipperStatus;
   shipperId: string | null;
   shipperCode: string | null;
+  addressCode: string | null;
+  addressOutcome: AddressOutcome | null;
   errorCode: string | null;
   errorMessage: string | null;
 }
