@@ -1,8 +1,6 @@
-node_modules/
 dist/
+node_modules/
 coverage/
-.DS_Store
-*.log
-.env
-.env.local
+# Generated at prebuild from package.json — single source of truth for SDK_VERSION
 src/version.ts
+*.tsbuildinfo
