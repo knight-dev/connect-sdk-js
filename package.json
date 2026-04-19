@@ -1,0 +1,67 @@
+{
+  "name": "@logicware.app/connect-sdk",
+  "version": "0.1.0",
+  "description": "Official JavaScript/TypeScript SDK for Logicware Connect — integrate your own courier website with a Logicware-hosted warehouse.",
+  "license": "MIT",
+  "author": "Logicware",
+  "homepage": "https://logicware.app/developers/sdk-js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/knight-dev/connect-sdk-js.git"
+  },
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "gen-version": "node scripts/gen-version.mjs",
+    "prebuild": "pnpm run gen-version",
+    "pretest": "pnpm run gen-version",
+    "pretypecheck": "pnpm run gen-version",
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint . --max-warnings 0",
+    "docs": "typedoc"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.0.0",
+    "@typescript-eslint/parser": "^8.0.0",
+    "eslint": "^9.0.0",
+    "tsup": "^8.3.0",
+    "typedoc": "^0.26.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  },
+  "keywords": [
+    "logicware",
+    "connect",
+    "sdk",
+    "courier",
+    "shipping",
+    "freight",
+    "caribbean"
+  ]
+}
