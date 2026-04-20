@@ -16,40 +16,35 @@ export interface ListManifestsOptions extends PageOptions {
   type?: ManifestType;
 }
 
+interface ManifestListResponse {
+  data: Manifest[];
+  pagination: { page: number; pageSize: number; totalCount: number; totalPages: number };
+}
+
 export class ManifestsResource extends ResourceBase {
-  async list(options?: ListManifestsOptions): Promise<{ data: unknown }> {
-    const raw = await this.http.request<{ data: unknown }>({
+  async list(options?: ListManifestsOptions): Promise<ManifestListResponse> {
+    const raw = await this.http.request<ManifestListResponse>({
       method: 'GET',
       path: '/api/v1/manifests',
       query: { status: options?.status, type: options?.type, ...this.buildPageQuery(options) }
     });
-    return { data: raw.data };
+    return { data: raw.data, pagination: raw.pagination };
   }
 
   listAll(options?: Omit<ListManifestsOptions, 'page'>): AsyncGenerator<Manifest, void, void> {
-    // The list endpoint's paginated envelope is inside `data` (not at the top level)
-    // because the session-auth version embeds its own pagination. We surface an
-    // async iterator over results irrespective of that nesting.
     const self = this;
     return (async function* () {
       let page = 1;
       while (true) {
-        const raw = await self.http.request<{
-          data:
-            | { manifests: Manifest[]; pagination?: { page: number; totalPages: number } }
-            | Manifest[];
-        }>({
+        const raw = await self.http.request<ManifestListResponse>({
           method: 'GET',
           path: '/api/v1/manifests',
           query: { status: options?.status, type: options?.type, page, pageSize: options?.pageSize }
         });
 
-        const data = raw.data;
-        const items = Array.isArray(data) ? data : (data.manifests ?? []);
-        for (const m of items) yield m;
+        for (const m of raw.data) yield m;
 
-        const pagination = Array.isArray(data) ? undefined : data.pagination;
-        if (!pagination || pagination.page >= pagination.totalPages) return;
+        if (!raw.pagination || raw.pagination.page >= raw.pagination.totalPages) return;
         page++;
       }
     })();

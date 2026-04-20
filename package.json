@@ -1,6 +1,6 @@
 {
   "name": "@logicware.app/connect-sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Official JavaScript/TypeScript SDK for Logicware Connect — integrate your own courier website with a Logicware-hosted warehouse.",
   "license": "MIT",
   "author": "Logicware",

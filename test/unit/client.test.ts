@@ -54,7 +54,7 @@ describe('HttpClient request path', () => {
     const headers = (init!.headers as Record<string, string>);
     expect(headers['X-Api-Key']).toBe('sk_test_xyz');
     expect(headers['Accept']).toBe('application/json');
-    expect(headers['User-Agent']).toMatch(/@logicware\/connect-sdk\/\d+\.\d+\.\d+/);
+    expect(headers['User-Agent']).toMatch(/@logicware\.app\/connect-sdk\/\d+\.\d+\.\d+/);
   });
 
   it('serialises JSON body and sets Content-Type for mutating methods', async () => {

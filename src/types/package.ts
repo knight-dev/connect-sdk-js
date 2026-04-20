@@ -1,4 +1,5 @@
 import type { IsoDateTime } from './common.js';
+import type { FreightType } from './warehouse.js';
 
 export type PackageStatus =
   | 'PreAlert'
@@ -29,6 +30,7 @@ export interface Package {
   shipperId: string | null;
   shipperAddressCode: string | null;
   manifestId: string | null;
+  freightType: FreightType;
   receivedAt: IsoDateTime | null;
   createdAt?: IsoDateTime;
 }

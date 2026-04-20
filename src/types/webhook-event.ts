@@ -50,6 +50,8 @@ export interface PackageStatusChangedPayload {
   previousStatus?: string;
   shipperId: string | null;
   manifestId: string | null;
+  /** Air / Sea — present on events from api-courier ≥ 2026-04-20. */
+  freightType?: 'Air' | 'Sea';
   source?: string;
 }
 
@@ -66,6 +68,8 @@ export interface PackageUpdatedPayload {
   merchantName?: string | null;
   recipientName?: string | null;
   locationCode?: string | null;
+  /** Air / Sea — present on events from api-courier ≥ 2026-04-20. */
+  freightType?: 'Air' | 'Sea';
   reason?: string | null;
   source?: string;
   changedFields?: string[];
